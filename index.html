@@ -5,7 +5,7 @@
   <title>Juego Adivina el Pokémon</title>
 </head>
 <body>
-  <h1>🎮 ¡Adivina el Pokémon!</h1>
+  <h1>🎮 ¡Adivina el Pokémon con las pista que se muestras!</h1>
   <p id="pista">Cargando pista...</p>
   <input type="text" id="respuesta" placeholder="Escribe el nombre del Pokémon">
   <button onclick="verificarRespuesta()">Adivinar</button>
@@ -28,7 +28,7 @@
         const tipo = data.types[0].type.name;
         const habilidades = data.abilities.map(h => h.ability.name);
         document.getElementById("pista").innerText =
-          `🔍 Pista: Tiene ${habilidades.length} habilidad(es) y su tipo principal es '${tipo}' y su nombre empieza por ${nombrePokemon[0]}.`;
+          `🔍 Pista: Tiene ${habilidades.length} habilidad(es) y su tipo principal es '${tipo}' y su nombre empieza por ${nombrePokemon[0]} .`;
       } catch (error) {
         document.getElementById("pista").innerText = "❌ Error al cargar el Pokémon.";
       }
