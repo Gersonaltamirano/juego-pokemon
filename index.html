@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego Adivina el Pokémon</title>
+</head>
+<body>
+  <h1>🎮 ¡Adivina el Pokémon!</h1>
+  <p id="pista">Cargando pista...</p>
+  <input type="text" id="respuesta" placeholder="Escribe el nombre del Pokémon">
+  <button onclick="verificarRespuesta()">Adivinar</button>
+  
+  <p id="resultado"></p>
+    <img id="pokemonImage" src="https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-600nw-2079504220.jpg" alt="Imagen del Pokémon" style=" width: 100px; height: 100px;">
+
+  <script>
+    let nombrePokemon = "";
+
+    async function obtenerPokemon() {
+      const id = Math.floor(Math.random() * 50) + 1; // Solo los primeros 50
+      const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        nombrePokemon = data.name.toLowerCase();
+        const imagen = data.sprites.other.dream_world.front_default || data.sprites.front_default;
+        document.getElementById("pokemonImage").src = imagen;
+        const tipo = data.types[0].type.name;
+        const habilidades = data.abilities.map(h => h.ability.name);
+        document.getElementById("pista").innerText =
+          `🔍 Pista: Tiene ${habilidades.length} habilidad(es) y su tipo principal es '${tipo}' y su nombre empieza por ${nombrePokemon[0]}.`;
+      } catch (error) {
+        document.getElementById("pista").innerText = "❌ Error al cargar el Pokémon.";
+      }
+    }
+
+    function verificarRespuesta() {
+      const respuesta = document.getElementById("respuesta").value.toLowerCase().trim();
+      const resultado = document.getElementById("resultado");
+      if (respuesta === nombrePokemon) {
+        resultado.innerText = `✅ ¡Correcto! Era ${nombrePokemon.charAt(0).toUpperCase() + nombrePokemon.slice(1)}.`;
+      } else {
+        resultado.innerText = `❌ Incorrecto. El nombre correcto era ${nombrePokemon.charAt(0).toUpperCase() + nombrePokemon.slice(1)}.`;
+      }
+    }
+
+    obtenerPokemon(); // Iniciar juego
+  </script>
+</body>
+</html>
